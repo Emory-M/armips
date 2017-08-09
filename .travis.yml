@@ -1,0 +1,20 @@
+language: cpp
+sudo: required
+dist: trusty
+compiler: gcc
+script: cd armips && cmake -DCMAKE_BUILD_TYPE=Release . && make
+env:
+- BUILD_ARCH=x64
+os:
+- osx
+before_deploy:
+- export DEPLOY_FILE=armips-${TRAVIS_OS_NAME}-${TRAVIS_TAG}.tar.gz
+- tar -czvf $DEPLOY_FILE armips LICENSE.txt Readme.txt
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key:
+    secure: osr61hXWPmay0q5yde1D2rqDsHqcifStMd1j3j5v8ePWZd3Q/ZDmxb4x/RmnTCzacHtSRa+j09lWZoxjhMWA42+KstEsCBv38qBqlZOHpeJO1rXEguSofxAbKg+9PneQMCD3WpFuhe35SesXKUXl40ekpgT0NliWwjI5vbOVuTgXqVjdwObjMOy8uMNGF+IMHmln4b1vduITYvlRn6EWR4bV9orsfCIGWebCEf0gM6beeeTqnsfuo4ZIjMTKJyR6j80oMC0/ZRO0rMWkSP2LTtPx1+36E4gPDdL7DRDDOz/ZhBrZVmCBSLvPeUASWE3ZoXfKndyx5vHNiAUFuYf1i3w5a8/fSndOu4XDBNl3Dl++fuo2vLGPnI/QfCvZtJ16/K4hmpjjSRjCAsp4LG1wWqIOaBRTp4qGCxSnGq9tamfyI+h3nlV2i7KPfDu9tAuJsHwtF4QYvnJPuyuFzYOTJWccdgpkCBtS8cz4rRLbMf1mT6MpsaxSLqC7Yu7ogHbAoa40Zphys/66IL6oo9E+AFizOdJsELt38HZJTo9hkd2usuqs+e4ngqQfFoa1SXVGQgb2gFKjg3F2o3hwIEr4LlBUTTWUH212m+NzqH7yHdE27KHCDynB0AmJlhbXpMqJZERv+lZ0eZCStGyjdO/9YCLnle95atA4Ak0QrcLp63I=
+  file: "$DEPLOY_FILE"
+  on:
+    tags: true
